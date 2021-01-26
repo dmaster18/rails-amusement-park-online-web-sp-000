@@ -1,13 +1,4 @@
-<%= form_for(@attraction) do |f| %>
+  
+<h1>New attraction</h1>
 
-    <%= f.text_field :name %>
-    <%= f.number_field :min_height %>
-    <%= f.number_field :happiness_rating %>
-    <%= f.number_field :nausea_rating %>
-    <%= f.number_field :tickets %>
-    <%= f.submit %>
-
-
-
-
-<% end %>
+<%= render 'form' %>
