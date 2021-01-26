@@ -1,26 +1,38 @@
-<h1>Attractions#index</h1>
-<p>Find me in app/views/attractions/index.html.erb</p>
-<% if !current_user.admin %>
-<% @attractions.each do |attraction| %>
+<h1>Listing attractions</h1>
 
-    <%= attraction.name %>
-      <%= attraction.tickets %>
-      <%= attraction.nausea_rating %>
-      <%= attraction.happiness_rating %>
-      <%= attraction.min_height %>
-      <%= link_to "Go on #{attraction.name}", attraction_path(attraction) %>
-<% end %>
+<table class="table">
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
 
+  <tbody>
+    <tr>
+      <td><strong>Name</strong></td>
+      <td><strong>Tickets</strong></td>
+      <td><strong>Details</strong></td>
+    </tr>
+    <% @attractions.each do |attraction| %>
+      <tr>
+
+        <td><%= attraction.name %></td>
+        <td><%= attraction.tickets %></td>
+        <% if current_user.admin %>
+          <td><%= link_to "Show #{attraction.name}", attraction_path(attraction) %></td>
+        <% else %>
+          <td><%= link_to "Go on #{attraction.name}", attraction_path(attraction) %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+<% if @user %>
+  <p>
+    <%= link_to "Back to profile", user_path(@user), {:class => "btn btn-primary"} %>
+  </p>
 <% else %>
-<% @attractions.each do |attraction| %>
-
-    <%= attraction.name %>
-      <%= attraction.tickets %>
-      <%= attraction.nausea_rating %>
-      <%= attraction.happiness_rating %>
-      <%= attraction.min_height %>
-      <%= link_to "Show #{attraction.name}", attraction_path(attraction) %>
-<% end %>
-
-<%= link_to("New Attraction", new_attraction_path) %>
+  <p><%= link_to 'New Attraction', new_attraction_path %></p>
 <% end %>
