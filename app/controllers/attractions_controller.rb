@@ -5,20 +5,7 @@ class AttractionsController < ApplicationController
 
   def show
     @attraction = Attraction.find_by(id: params[:id])
-  end
-
-  def cost
-    attraction = Attraction.find_by(id: params[:id])
-    ride = Ride.create 
-    ride.attraction = attraction
-    ride.user = current_user
-    flash[:notice] = ride.take_ride
-    # tickets = current_user.tickets - attraction.tickets
-    # happiness = current_user.happiness + attraction.happiness_rating
-    # nausea = current_user.nausea + attraction.nausea_rating
-    # current_user.update(tickets: tickets, happiness: happiness, nausea: nausea)
-    # flash[:notice] = "Thanks for riding the #{attraction.name}!"
-    redirect_to user_path(current_user)
+    @ride = @attraction.rides.build(user_id: current_user.id)
   end
 
   def new
@@ -32,16 +19,23 @@ class AttractionsController < ApplicationController
 
   def edit
     @attraction = Attraction.find_by(id: params[:id])
+    @ride = @attraction.rides.build(user_id: current_user.id)
   end
 
   def update
-    Attraction.update(attraction_params)
-    redirect_to attraction_path(params[:id])
+    attraction = Attraction.find_by(id: params[:id])
+    attraction.update(attraction_params)
+    redirect_to attraction_path(attraction)
   end
 
   private
-
-  def attraction_params
-    params.require(:attraction).permit(:name, :min_height, :happiness_rating, :nausea_rating, :tickets)
-  end
+    def attraction_params
+      params.require(:attraction).permit(
+        :name,
+        :min_height,
+        :tickets,
+        :happiness_rating,
+        :nausea_ratiing
+      )
+    end
 end
